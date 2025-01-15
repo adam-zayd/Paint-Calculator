@@ -38,6 +38,12 @@ public class Main {
                 area = (triangleBase * triangleHeight) / 2;
                 break;
 
+            case "square":
+                System.out.println("Enter length:");
+                double length = reader.nextDouble();
+                area = length * length;
+                break;
+
             default:
                 System.out.println("Surface type invalid. Please restart and be careful with spelling.");
         }
@@ -55,7 +61,7 @@ public class Main {
 
         //get details of surface (shape, dimensions) and number of obstacles
         for (int i = 1; i <= numSurfaces; i++) {
-            System.out.println("Enter the surface type (rectangle, trapezia, circle, semicircle, triangle) for surface " + i + ":");
+            System.out.println("Enter the surface type (rectangle, trapezia, circle, semicircle, triangle, square) for surface " + i + ":");
             String surfaceType = reader.next().toLowerCase();
 
             System.out.println("Enter dimensions for the surface:");
@@ -68,7 +74,7 @@ public class Main {
 
             //also need same details of obstacles (shape, dimensions)
             for (int j = 1; j <= numObstacles; j++) {
-                System.out.println("Enter the obstacle type (rectangle, trapezia, circle, semicircle, triangle) for obstacle " + j + ":");
+                System.out.println("Enter the obstacle type (rectangle, trapezia, circle, semicircle, triangle, square) for obstacle " + j + ":");
                 String obstacleType = reader.next().toLowerCase();
 
                 System.out.println("Enter dimensions for the obstacle:");
