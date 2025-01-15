@@ -1,4 +1,3 @@
-
 package org.example;
 import java.util.Scanner;
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
@@ -25,14 +24,22 @@ public class Main {
                 double radius = reader.nextDouble();
                 area = Math.PI * radius * radius;
                 break;
+
+            case "semicircle":
+                System.out.println("Enter radius:");
+                double radius_semi = reader.nextDouble();
+                area = 0.5*Math.PI * radius_semi * radius_semi;
+                break;
+
             case "triangle":
                 System.out.println("Enter base and height:");
                 double triangleBase = reader.nextDouble();
                 double triangleHeight = reader.nextDouble();
                 area = (triangleBase * triangleHeight) / 2;
                 break;
+
             default:
-                System.out.println("Unknown surface type.");
+                System.out.println("Surface type invalid. Please restart and be careful with spelling.");
         }
         return area;
     }
@@ -48,7 +55,7 @@ public class Main {
 
         //get details of surface (shape, dimensions) and number of obstacles
         for (int i = 1; i <= numSurfaces; i++) {
-            System.out.println("Enter the surface type (rectangle, trapezia, circle, triangle) for surface " + i + ":");
+            System.out.println("Enter the surface type (rectangle, trapezia, circle, semicircle, triangle) for surface " + i + ":");
             String surfaceType = reader.next().toLowerCase();
 
             System.out.println("Enter dimensions for the surface:");
@@ -61,7 +68,7 @@ public class Main {
 
             //also need same details of obstacles (shape, dimensions)
             for (int j = 1; j <= numObstacles; j++) {
-                System.out.println("Enter the obstacle type (rectangle, trapezia, circle, triangle) for obstacle " + j + ":");
+                System.out.println("Enter the obstacle type (rectangle, trapezia, circle, semicircle, triangle) for obstacle " + j + ":");
                 String obstacleType = reader.next().toLowerCase();
 
                 System.out.println("Enter dimensions for the obstacle:");
