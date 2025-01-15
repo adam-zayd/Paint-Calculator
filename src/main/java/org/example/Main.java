@@ -98,7 +98,7 @@ public class Main {
 
         paintRequired*=coats;
 
-        return paintRequired;
+        System.out.println("You will require "+paintRequired+"litres of your chosen paint.");
 
     }
 
