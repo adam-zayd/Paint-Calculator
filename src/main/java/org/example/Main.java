@@ -19,6 +19,22 @@ public class Main {
         }
     }
 
+    private static String getValidSurfaceType(Scanner reader, String outp) {
+        while (true) {
+            System.out.println(outp);
+            String input = reader.next().toLowerCase();
+            if (input.equals("rectangle") || input.equals("square")||input.equals("trapezia") || input.equals("circle") ||
+                    input.equals("semicircle") || input.equals("triangle")) {
+                return input;
+            }
+            System.out.println("Invalid surface type. Please enter a valid type from the list.");
+        }
+    }
+
+
+
+
+
     private static double calculateShapeArea(String type, Scanner reader) {
         double area = 0;
         switch (type) {
@@ -77,8 +93,7 @@ public class Main {
 
         //get details of surface (shape, dimensions) and number of obstacles
         for (int i = 1; i <= numSurfaces; i++) {
-            System.out.println("Enter the surface type (rectangle, trapezia, circle, semicircle, triangle, square) for surface " + i + ":");
-            String surfaceType = reader.next().toLowerCase();
+            String surfaceType = getValidSurfaceType(reader, "Enter the surface type (rectangle, trapezia, circle, semicircle, triangle, square) for surface " + i + ":");
 
             System.out.println("Enter dimensions for the surface:");
             double surfaceArea = calculateShapeArea(surfaceType, reader);
@@ -90,8 +105,7 @@ public class Main {
 
             //also need same details of obstacles (shape, dimensions)
             for (int j = 1; j <= numObstacles; j++) {
-                System.out.println("Enter the obstacle type (rectangle, trapezia, circle, semicircle, triangle, square) for obstacle " + j + ":");
-                String obstacleType = reader.next().toLowerCase();
+                String obstacleType = getValidSurfaceType(reader, "Enter the obstacle type (rectangle, trapezia, circle, semicircle, triangle, square) for obstacle " + j + ":");
 
                 System.out.println("Enter dimensions for the obstacle:");
                 obstacleArea += calculateShapeArea(obstacleType, reader);
