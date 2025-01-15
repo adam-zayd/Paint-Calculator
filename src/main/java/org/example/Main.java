@@ -1,9 +1,13 @@
 package org.example;
 import java.util.Scanner;
-4//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
+//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
 
+
+
+
+    //Validation checks
     private static int getValidInt(Scanner reader, String outp, String err) {
         while (true) {
             System.out.println(outp);
@@ -31,6 +35,21 @@ public class Main {
         }
     }
 
+    private static double getValidDouble(Scanner reader, String outp, String err) {
+        while (true) {
+            System.out.println(outp);
+            if (reader.hasNextDouble()||reader.hasNextInt()) {
+                double value = Double.parseDouble(reader.next());
+                if (value>0) {
+                    return value;
+                }
+            } else {
+                reader.next();
+            }
+            System.out.println(err);
+        }
+    }
+
 
 
 
@@ -40,45 +59,41 @@ public class Main {
         double area = 0;
         switch (type) {
             case "rectangle":
-                System.out.println("Enter width and height:");
-                double width = reader.nextDouble();
-                double height = reader.nextDouble();
+                double width = getValidDouble(reader, "Enter width:", "Please enter a valid number. \nMust be greater than zero");
+                double height = getValidDouble(reader, "Enter height:", "Please enter a valid number. \nMust be greater than zero");
+
                 area = width * height;
                 break;
             case "trapezia":
-                System.out.println("Enter base1, base2, and height:");
-                double base1 = reader.nextDouble();
-                double base2 = reader.nextDouble();
-                double trapeziaHeight = reader.nextDouble();
+                double base1 = getValidDouble(reader, "Enter base1:", "Please enter a valid number. \nMust be greater than zero");
+                double base2 = getValidDouble(reader, "Enter base2:", "Please enter a valid number. \nMust be greater than zero");
+                double trapeziaHeight = getValidDouble(reader, "Enter height:", "Please enter a valid number. \nMust be greater than zero");
                 area = ((base1 + base2) / 2) * trapeziaHeight;
                 break;
             case "circle":
-                System.out.println("Enter radius:");
-                double radius = reader.nextDouble();
+                double radius = getValidDouble(reader, "Enter radius:", "Please enter a valid number. \nMust be greater than zero");
                 area = Math.PI * radius * radius;
                 break;
 
             case "semicircle":
-                System.out.println("Enter radius:");
-                double radius_semi = reader.nextDouble();
+                double radius_semi = getValidDouble(reader, "Enter radius:", "Please enter a valid number. \nMust be greater than zero");
                 area = 0.5*Math.PI * radius_semi * radius_semi;
                 break;
 
             case "triangle":
-                System.out.println("Enter base and height:");
-                double triangleBase = reader.nextDouble();
-                double triangleHeight = reader.nextDouble();
+                double triangleBase = getValidDouble(reader, "Enter base:", "Please enter a valid number. \nMust be greater than zero");
+                double triangleHeight = getValidDouble(reader, "Enter height:", "Please enter a valid number. \nMust be greater than zero");
                 area = (triangleBase * triangleHeight) / 2;
                 break;
 
             case "square":
-                System.out.println("Enter length:");
-                double length = reader.nextDouble();
+                double length = getValidDouble(reader, "Enter length:", "Please enter a valid number. \nMust be greater than zero");
                 area = length * length;
                 break;
 
             default:
-                System.out.println("Surface type invalid. Please restart and be careful with spelling.");
+                System.out.println("ERROR with Surface type being unrecognised");
+                break;
         }
         return area;
     }
@@ -96,10 +111,10 @@ public class Main {
         for (int i = 1; i <= numSurfaces; i++) {
             String surfaceType = getValidSurfaceType(reader, "Enter the surface type (rectangle, trapezia, circle, semicircle, triangle, square) for surface " + i + ":");
 
-            System.out.println("Enter dimensions for the surface:");
+            System.out.println("Enter dimensions for the surface...");
             double surfaceArea = calculateShapeArea(surfaceType, reader);
 
-            int numObstacles = getValidInt(reader, "Enter the number of obstacles on this surface. That is, surfaces that can not be painted over::", "Your entry is invalid. \nMake sure your input is 0 or greater. \nMake sure it is only a number. \nMake sure it has no decimal place.");;
+            int numObstacles = getValidInt(reader, "Enter the number of obstacles on this surface. That is, surfaces that can not be painted over::", "Your entry is invalid. \nMake sure your input is 0 or greater. \nMake sure it is only a number. \nMake sure it has no decimal place.");
 
             double obstacleArea = 0;
 
@@ -107,8 +122,14 @@ public class Main {
             for (int j = 1; j <= numObstacles; j++) {
                 String obstacleType = getValidSurfaceType(reader, "Enter the obstacle type (rectangle, trapezia, circle, semicircle, triangle, square) for obstacle " + j + ":");
 
-                System.out.println("Enter dimensions for the obstacle:");
-                obstacleArea += calculateShapeArea(obstacleType, reader);
+                System.out.println("Enter dimensions for the obstacle...");
+                double tmp=calculateShapeArea(obstacleType, reader);
+                if (surfaceArea<tmp){
+                    System.out.println("You may have made a mistake entering a dimension of an obstacle.\nThe area of the obstacle using the entered dimensions: "+  tmp);
+                    System.out.println("Please restart...");
+                    System.exit(0);
+                }
+                obstacleArea += tmp;
             }
 
             double paintableArea = surfaceArea - obstacleArea;
@@ -120,17 +141,18 @@ public class Main {
     }
 
     private static void requiredPaint(double totalPaintableArea, Scanner reader) {
-        System.out.println("Enter the coverage of your paint. Firstly, the units squared - this must be the same unit of measurement used earlier, then, per how many litres. \nPress enter after typing each figure");
-        double mCoverage = reader.nextDouble();
-        double lCoverage = reader.nextDouble();
+        System.out.println("Enter the coverage of your paint. Firstly, the units squared - this must be the same unit of measurement used earlier. Then, enter per how many litres. \n");
+        double mCoverage = getValidDouble(reader, "Enter units squared:", "Please enter only a valid number. \nMust be greater than zero");
+        double lCoverage = getValidDouble(reader, "Enter 'per litres squared':", "Please enter only a valid number. \nMust be greater than zero");
+
         double coverage = lCoverage/mCoverage;
         double paintRequired= coverage*totalPaintableArea;
 
-        int coats= getValidInt(reader, "Enter the number of paint coats that you want:", "Your entry is invalid. \nMake sure your input is 0 or greater. \nMake sure it is only a number. \nMake sure it has no decimal place.");;
+        int coats= getValidInt(reader, "Enter the number of paint coats that you want:", "Your entry is invalid. \nMake sure your input is 0 or greater. \nMake sure it is only a number. \nMake sure it has no decimal place.");
 
         paintRequired*=coats;
 
-        System.out.println("You will require "+paintRequired+"litres of your chosen paint.");
+        System.out.println("You will require " + paintRequired + " litres of your chosen paint.");
 
     }
 
