@@ -3,6 +3,22 @@ import java.util.Scanner;
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
+
+    private static int getValidInt(Scanner reader, String outp, String err) {
+        while (true) {
+            System.out.println(outp);
+            if (reader.hasNextInt()) {
+                int value = reader.nextInt();
+                if (value>=0) {
+                    return value;
+                }
+            } else {
+                reader.next();
+            }
+            System.out.println(err);
+        }
+    }
+
     private static double calculateShapeArea(String type, Scanner reader) {
         double area = 0;
         switch (type) {
@@ -51,9 +67,12 @@ public class Main {
     }
     private static double calculateSurfaceArea(Scanner reader) {
 
-        System.out.println("Enter the number of surfaces that need painting:");
-        int numSurfaces = reader.nextInt();
 
+        int numSurfaces = getValidInt(reader, "Enter the number of surfaces that need painting:", "Your entry is invalid. \nMake sure your input is 0 or greater. \nMake sure it is only a number. \nMake sure it has no decimal place.");
+        if (numSurfaces==0){
+            System.out.println("Total paintable surface = 0 \nTotal paint required =0");
+            System.exit(0);
+        }
         double totalPaintableArea = 0;
 
         //get details of surface (shape, dimensions) and number of obstacles
@@ -65,7 +84,7 @@ public class Main {
             double surfaceArea = calculateShapeArea(surfaceType, reader);
 
             System.out.println("Enter the number of obstacles on this surface. That is, surfaces that can not be painted over:");
-            int numObstacles = reader.nextInt();
+            int numObstacles = getValidInt(reader, "Enter the number of obstacles on this surface. That is, surfaces that can not be painted over::", "Your entry is invalid. \nMake sure your input is 0 or greater. \nMake sure it is only a number. \nMake sure it has no decimal place.");;
 
             double obstacleArea = 0;
 
@@ -83,7 +102,7 @@ public class Main {
             totalPaintableArea += paintableArea;
         }
         System.out.println("Total paintable area: " + totalPaintableArea + " units squared");
-        return totalPaintableArea
+        return totalPaintableArea;
     }
 
     private static void requiredPaint(double totalPaintableArea, Scanner reader) {
@@ -93,8 +112,7 @@ public class Main {
         double coverage = lCoverage/mCoverage;
         double paintRequired= coverage*totalPaintableArea;
 
-        System.out.println("Enter how many coats you want:");
-        int coats= reader.nextInt();
+        int coats= getValidInt(reader, "Enter the number of paint coats that you want:", "Your entry is invalid. \nMake sure your input is 0 or greater. \nMake sure it is only a number. \nMake sure it has no decimal place.");;
 
         paintRequired*=coats;
 
@@ -103,7 +121,7 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        System.out.println("DISCLAIMER: Please be consistent with all unit measurements (keep them all in centimetres or inches. This should be based on the paint coverage unit of measurement, found on the back of the can)");
+        System.out.println("DISCLAIMER: Please be consistent with all unit measurements (keep them all in centimetres or inches. This should be based on the paint coverage unit of measurement, found on the back of the can). Please press enter whenever entering requested information");
 
         Scanner reader = new Scanner(System.in);
         double totalPaintableArea= calculateSurfaceArea(reader);
