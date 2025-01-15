@@ -3,7 +3,7 @@ import java.util.Scanner;
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
-    private static double calculateArea(String type, Scanner reader) {
+    private static double calculateShapeArea(String type, Scanner reader) {
         double area = 0;
         switch (type) {
             case "rectangle":
@@ -49,10 +49,7 @@ public class Main {
         }
         return area;
     }
-    public static void main(String[] args) {
-        System.out.println("DISCLAIMER: Please be consistent with all unit measurements (keep them all in centimetres or inches)");
-
-        Scanner reader = new Scanner(System.in);
+    private static double calculateSurfaceArea(Scanner reader) {
 
         System.out.println("Enter the number of surfaces that need painting:");
         int numSurfaces = reader.nextInt();
@@ -65,9 +62,9 @@ public class Main {
             String surfaceType = reader.next().toLowerCase();
 
             System.out.println("Enter dimensions for the surface:");
-            double surfaceArea = calculateArea(surfaceType, reader);
+            double surfaceArea = calculateShapeArea(surfaceType, reader);
 
-            System.out.println("Enter the number of obstacles on this surface:");
+            System.out.println("Enter the number of obstacles on this surface. That is, surfaces that can not be painted over:");
             int numObstacles = reader.nextInt();
 
             double obstacleArea = 0;
@@ -78,15 +75,40 @@ public class Main {
                 String obstacleType = reader.next().toLowerCase();
 
                 System.out.println("Enter dimensions for the obstacle:");
-                obstacleArea += calculateArea(obstacleType, reader);
+                obstacleArea += calculateShapeArea(obstacleType, reader);
             }
 
             double paintableArea = surfaceArea - obstacleArea;
             System.out.println("Paintable area for surface " + i + ": " + paintableArea + " units squared");
             totalPaintableArea += paintableArea;
         }
-
         System.out.println("Total paintable area: " + totalPaintableArea + " units squared");
+        return totalPaintableArea
+    }
+
+    private static void requiredPaint(double totalPaintableArea, Scanner reader) {
+        System.out.println("Enter the coverage of your paint. Firstly, the units squared - this must be the same unit of measurement used earlier, then, per how many litres. \nPress enter after typing each figure");
+        double mCoverage = reader.nextDouble();
+        double lCoverage = reader.nextDouble();
+        double coverage = lCoverage/mCoverage;
+        double paintRequired= coverage*totalPaintableArea;
+
+        System.out.println("Enter how many coats you want:");
+        int coats= reader.nextInt();
+
+        paintRequired*=coats;
+
+        return paintRequired;
+
+    }
+
+    public static void main(String[] args) {
+        System.out.println("DISCLAIMER: Please be consistent with all unit measurements (keep them all in centimetres or inches. This should be based on the paint coverage unit of measurement, found on the back of the can)");
+
+        Scanner reader = new Scanner(System.in);
+        double totalPaintableArea= calculateSurfaceArea(reader);
+        requiredPaint(totalPaintableArea, reader);
         reader.close();
         }
-    }
+
+        }
