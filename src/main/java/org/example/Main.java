@@ -1,6 +1,6 @@
 package org.example;
 import java.util.Scanner;
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
+4//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
 
@@ -30,6 +30,7 @@ public class Main {
             System.out.println("Invalid surface type. Please enter a valid type from the list.");
         }
     }
+
 
 
 
@@ -98,7 +99,6 @@ public class Main {
             System.out.println("Enter dimensions for the surface:");
             double surfaceArea = calculateShapeArea(surfaceType, reader);
 
-            System.out.println("Enter the number of obstacles on this surface. That is, surfaces that can not be painted over:");
             int numObstacles = getValidInt(reader, "Enter the number of obstacles on this surface. That is, surfaces that can not be painted over::", "Your entry is invalid. \nMake sure your input is 0 or greater. \nMake sure it is only a number. \nMake sure it has no decimal place.");;
 
             double obstacleArea = 0;
@@ -142,5 +142,4 @@ public class Main {
         requiredPaint(totalPaintableArea, reader);
         reader.close();
         }
-
         }
