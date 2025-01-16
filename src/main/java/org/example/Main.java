@@ -99,7 +99,6 @@ public class Main {
     }
     private static double calculateSurfaceArea(Scanner reader) {
 
-
         int numSurfaces = getValidInt(reader, "Enter the number of surfaces that need painting:", "Your entry is invalid. \nMake sure your input is 0 or greater. \nMake sure it is only a number. \nMake sure it has no decimal place.");
         if (numSurfaces==0){
             System.out.println("Total paintable surface = 0 \nTotal paint required =0");
@@ -152,7 +151,12 @@ public class Main {
 
         paintRequired*=coats;
 
-        System.out.println("You will require " + paintRequired + " litres of your chosen paint.");
+        double canSize= getValidDouble(reader, "Enter the amount of litres per paint can","Please enter only a valid number. \nMust be greater than zero");
+
+        double cansNeeded = paintRequired/canSize;
+
+        System.out.println("You will require " + Math.ceil(paintRequired * 1000) / 1000 + " litres of your chosen paint.");
+        System.out.println("You will require " + Math.ceil(cansNeeded) + " cans of your chosen paint.");
 
     }
 
@@ -164,4 +168,4 @@ public class Main {
         requiredPaint(totalPaintableArea, reader);
         reader.close();
         }
-        }
+}
